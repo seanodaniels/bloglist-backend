@@ -1,14 +1,21 @@
 const config = require('./utils/config')
 const express = require('express')
-require('express-async-errors')
+const mongoose = require('mongoose')
 const app = express()
 const cors = require('cors')
 const logger = require('./utils/logger')
+require('express-async-errors')
+
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
+
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
+
 const middleware = require('./utils/middleware')
-const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
 
